@@ -28,7 +28,7 @@ def agregar_libro(request):
             return lista_libros(request) #redirecciona a la lista de libros despues de agregar uno nuevo
     else:
         form = LibroForm()
-    return render(request, 'biblioteca/agregar_libro.html', {'form': form, 'titulo': 'Agregar Libro'})
+    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Agregar Libro'})
     
 # Vista para editar un libro existente
 def editar_libro(request, libro_id):
@@ -40,7 +40,7 @@ def editar_libro(request, libro_id):
             return lista_libros(request) #redirecciona a la lista de libros despues de editar uno
     else:
         form=LibroForm(instance=libro)
-    return render(request, 'biblioteca/editar_libro.html', {'form': form, 'titulo': 'Editar Libro'})
+    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Editar Libro'})
 
 
 # Vista para eliminar un libro existente
@@ -64,3 +64,17 @@ def desactivar_libro(request, libro_id):
 #-- Fin de la vista basadas en funciones (FBV) ---#
 
 #-- Inicio de vistas basadas en clases (CBV) - futuro ---#
+
+#-- Fin de vistas basadas en clases (CBV) - futuro ---#
+
+#los archivos html que se deben crear son:
+# biblioteca/index.html
+# biblioteca/lista_libros.html
+# biblioteca/detalle_libro.html
+# biblioteca/agregar_libro.html
+# biblioteca/editar_libro.html
+# biblioteca/eliminar_libro.html
+# biblioteca/desactivar_libro.html
+#Estos archivos contendran el codigo HTML para renderizar las vistas correspondientes.
+#Se recomienda crear una plantilla master.html para heredar en las demas plantillas y mantener un diseño consistente.
+#La plantilla master.html puede incluir el encabezado, pie de pagina y estilos comunes.
