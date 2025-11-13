@@ -12,4 +12,11 @@ class Libro(models.Model):
 
     def __str__(self):
         return self.titulo
-#futuro modelo
+#futuro modelo para representar un usuario de la biblioteca
+#class Usuario(models.Model):
+#    nombre=models.CharField(max_length=100)
+#    email=models.EmailField(unique=True)
+#
+#    def __str__(self):
+#        return self.nombre
+
