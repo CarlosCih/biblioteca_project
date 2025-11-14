@@ -1,0 +1,13 @@
+{% extends "master.html" %}
+{% block title %}Página de Inicio - Biblioteca App{% endblock %}
+
+{% block content %}
+<div class="section center">
+    <h2 class="center-align">Bienvenido a la Biblioteca App</h2>
+    <p class="center-align">Explora nuestra colección de libros y agrega nuevos títulos a tu biblioteca.</p>
+    <div class="center-align">
+        <a href="{% url 'biblioteca:lista_libros' %}" class="btn waves-effect waves-light">Ver Libros</a>
+        <a href="{% url 'biblioteca:agregar_libro' %}" class="btn waves-effect waves-light">Agregar Nuevo Libro</a>
+    </div>
+</div>
+{% endblock %}

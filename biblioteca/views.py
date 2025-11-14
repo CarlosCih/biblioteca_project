@@ -6,6 +6,7 @@ from biblioteca.models import Libro
 #-- Vista para la pagina de inicio de la aplicacion biblioteca con un FBV(Function Based View) ---#
 def index(request):
     return render(request, 'biblioteca/index.html')
+#Nota: La ruta establecida dice que en la carpeta templates debe haber una carpeta llamada biblioteca que contenga el archivo index.html
 
 # Vista para listar todos los libros
 def lista_libros(request):
@@ -28,7 +29,7 @@ def agregar_libro(request):
             return lista_libros(request) #redirecciona a la lista de libros despues de agregar uno nuevo
     else:
         form = LibroForm()
-    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Agregar Libro'})
+    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Agregar Libro', 'libro': None})
     
 # Vista para editar un libro existente
 def editar_libro(request, libro_id):
@@ -40,7 +41,7 @@ def editar_libro(request, libro_id):
             return lista_libros(request) #redirecciona a la lista de libros despues de editar uno
     else:
         form=LibroForm(instance=libro)
-    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Editar Libro'})
+    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Editar Libro', 'libro': libro})
 
 
 # Vista para eliminar un libro existente

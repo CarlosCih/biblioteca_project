@@ -1,0 +1,43 @@
+{% extends "master.html" %}
+{% block title %}
+Lista de libros
+{% endblock %}
+{% block content %}
+<div class="">
+    <h2>Lista de Libros</h2>
+    <div class="right-align">
+        <a href="{% url 'biblioteca:agregar_libro' %}" class="btn">Agregar Nuevo Libro</a>
+    </div>
+    <table class="striped highlight responsive-table centered">
+        <thead class="grey lighten-2">
+            <tr>
+                <th>Titulo</th>
+                <th>Autor</th>
+                <th>Publicado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="grey lighten-4">
+            {% for book in libros %}
+            <tr>
+                <td>{{ book.titulo }}</td>
+                <td>{{ book.autor }}</td>
+                <td>{{ book.fecha_publicacion }}</td>
+                <td>
+                    <a class="btn-small blue waves-effect waves-light" href="{% url 'biblioteca:editar_libro' book.id %}">
+                        <i class="material-icons left">edit</i>Editar
+                    </a>
+                    <a class="btn-small red waves-effect waves-light" href="{% url 'biblioteca:eliminar_libro' book.id %}">
+                        <i class="material-icons left">delete</i>Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="center-align grey-text">No hay libros disponibles.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

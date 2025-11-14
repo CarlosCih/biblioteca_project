@@ -6,30 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     {% block extra_head %}{% endblock %}
 </head>
+
 <body>
     <header>
         <nav>
             <div class="nav-wrapper">
-                <a href="#" class="brand-logo center">Biblioteca App</a>
+                <a href="{% url 'biblioteca:index' %}" class="brand-logo center">Mi Biblioteca</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">
+                        menu
+                    </i></a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
-                    <li><a href="{% url 'lista_libros' %}">Libros</a></li>
-                    <li><a href="{% url 'agregar_libro' %}">Agregar Libro</a></li>
+                    <li><a href="{% url 'biblioteca:lista_libros' %}">Libros</a></li>
+                    <li><a href="{% url 'biblioteca:agregar_libro' %}">Agregar Libro</a></li>
                 </ul>
             </div>
         </nav>
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="{% url 'biblioteca:lista_libros' %}">Libros</a></li>
+            <li><a href="{% url 'biblioteca:agregar_libro' %}">Agregar Libro</a></li>
+        </ul>
     </header>
     <main>
         <div class="container">
             {% block content %}{% endblock %}
         </div>
     </main>
-    <footer>
+    <footer class="page-footer" style="position: fixed; bottom: 0; width: 100%;">
         <div class="container">
             <p class="center-align">Biblioteca App &copy; 2025</p>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 
