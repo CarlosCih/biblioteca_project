@@ -3,10 +3,10 @@
 Lista de libros
 {% endblock %}
 {% block content %}
-<div class="">
+<div class="section">
     <h2>Lista de Libros</h2>
     <div class="right-align">
-        <a href="{% url 'biblioteca:agregar_libro' %}" class="btn">Agregar Nuevo Libro</a>
+        <a href="{% url 'biblioteca:agregar_libro' %}" class="btn ">Agregar Nuevo Libro</a>
     </div>
     <table class="striped highlight responsive-table centered">
         <thead class="grey lighten-2">
@@ -20,7 +20,9 @@ Lista de libros
         <tbody class="grey lighten-4">
             {% for book in libros %}
             <tr>
-                <td>{{ book.titulo }}</td>
+                <td>
+                    <a href="{% url 'biblioteca:detalle_libro' book.id %}">{{ book.titulo }}</a>
+                </td>
                 <td>{{ book.autor }}</td>
                 <td>{{ book.fecha_publicacion }}</td>
                 <td>
@@ -30,6 +32,7 @@ Lista de libros
                     <a class="btn-small red waves-effect waves-light" href="{% url 'biblioteca:eliminar_libro' book.id %}">
                         <i class="material-icons left">delete</i>Eliminar
                     </a>
+                    <a class="btn-small orange" href="{% url 'biblioteca:desactivar_libro' book.id %}"><i class="material-icons left">block</i>Desactivar</a>
                 </td>
             </tr>
             {% empty %}

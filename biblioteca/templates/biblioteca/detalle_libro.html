@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+{% block title %}Detalle del Libro {{ libro.titulo }}{% endblock %}
+{% block content %}
+
+<div class="section">
+    <h2>Detalle del Libro</h2>
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ libro.titulo }}</span>
+            <p><strong>Autor:</strong> {{ libro.autor }}</p>
+            <p><strong>Fecha de Publicación:</strong> {{ libro.fecha_publicacion }}</p>
+            <p><strong>ISBN:</strong> {{ libro.isbn }}</p>
+            <p><strong>Disponible:</strong> {{ libro.disponible|yesno:"Sí,No" }}</p>
+        </div>
+        <div class="card-action">
+            <a href="{% url 'biblioteca:editar_libro' libro.id %}" class="btn blue waves-effect waves-light">
+                <i class="material-icons left">edit</i>Editar
+            </a>
+            <a href="{% url 'biblioteca:eliminar_libro' libro.id %}" class="btn red waves-effect waves-light">
+                <i class="material-icons left">delete</i>Eliminar
+            </a>
+            <a href="{% url 'biblioteca:lista_libros' %}" class="btn grey">Volver a la Lista</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

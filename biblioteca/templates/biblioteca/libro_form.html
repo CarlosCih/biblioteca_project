@@ -3,4 +3,34 @@
 {% if libro.pk %}Editar Libro {{ libro.titulo }}{% else %}Agregar Nuevo Libro{% endif %} - Biblioteca App
 {% endblock %}
 {% block content %}
+<div class="section">
+    <div class="container">
+        <h2>{% if libro.pk %}Editar Libro {{ libro.titulo }}{% else %}Agregar Nuevo Libro{% endif %}</h2>
+        <form method="post" class="row">
+            {% csrf_token %}
+            <div class="col-12">
+                <p>
+                    {{ form.titulo.label_tag }}<br>
+                    {{ form.titulo }}
+                </p>
+                <p>
+                    {{ form.autor.label_tag }}<br>
+                    {{ form.autor }}
+                </p>
+                <p>
+                    {{ form.fecha_publicacion.label_tag }}<br>
+                    {{ form.fecha_publicacion }}
+                </p>
+                <p>
+                    {{ form.isbn.label_tag }}<br>
+                    {{ form.isbn }}
+                <p>
+            </div>
+            <div class="col-12 center">
+                <button type="submit" class="btn">Guardar</button>
+                <a href="{% url 'biblioteca:lista_libros' %}" class="btn red">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
