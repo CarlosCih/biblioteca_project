@@ -1,7 +1,18 @@
 from django.contrib import admin
-from .models import Libro
+from .models import Autor, Categoria ,Libro
 
 # Register your models here.
+
+@admin.register(Autor)
+class AutorAdmin(admin.ModelAdmin):
+    list_display = ('nombre','year','nacionalidad')
+    list_filter = ('nacionalidad',)
+    search_fields = ('nombre',)
+
+@admin.register(Categoria)
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display= ('nombre','descripcion')
+    search_fields = ('nombre',)
 @admin.register(Libro)
 class LibroAdmin(admin.ModelAdmin):
     list_display = ('titulo','autor','fecha_publicacion','isbn','disponible')

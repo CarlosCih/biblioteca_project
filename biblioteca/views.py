@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 
 from biblioteca.form import LibroForm
-from biblioteca.models import Libro
+from biblioteca.models import Libro, Autor, Categoria
+from django.views.generic import ListView
 
 #-- Vista para la pagina de inicio de la aplicacion biblioteca con un FBV(Function Based View) ---#
 def index(request):
@@ -65,6 +66,43 @@ def desactivar_libro(request, libro_id):
 #-- Fin de la vista basadas en funciones (FBV) ---#
 
 #-- Inicio de vistas basadas en clases (CBV) - futuro ---#
+
+#Vista de autores en CBV
+
+class AutorListView(ListView):
+    model = Autor
+    template_name = 'biblioteca/lista_autores.html'
+    context_object_name = 'autores'
+    ordering = ['nombre']
+    paginate_by = 10  # Numero de autores por pagina
+
+class 
+# Esta clase genera una vista para listar los autores con paginacion
+
+#Vista de categorias en CBV
+class CategoriaListView(ListView):
+    model = Categoria
+    template_name = 'biblioteca/lista_categorias.html'
+    context_object_name = 'categorias'
+    ordering = ['nombre']
+    paginate_by = 10  # Numero de categorias por pagina
+
+class CategoriaDetailView(ListView):
+    model = Libro
+    template_name = 'biblioteca/ver_categoria.html'
+    context_object_name = 'libros'
+    paginate_by = 10
+
+    def get_queryset(self):
+        self.categoria = get_object_or_404(Categoria, id=self.kwargs['categoria_id'])
+        return Libro.objects.filter(categoria=self.categoria, disponible=True).order_by('titulo')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categoria'] = self.categoria
+        return context
+
+#Vista de categorias en CBV
 
 #-- Fin de vistas basadas en clases (CBV) - futuro ---#
 
