@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy
 
-from biblioteca.form import LibroForm
+from biblioteca.form import AutorForm, CategoriaForm, LibroForm
 from biblioteca.models import Libro, Autor, Categoria
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 #-- Vista para la pagina de inicio de la aplicacion biblioteca con un FBV(Function Based View) ---#
 def index(request):
@@ -69,15 +70,59 @@ def desactivar_libro(request, libro_id):
 
 #Vista de autores en CBV
 
-class AutorListView(ListView):
+class ListAutorView(ListView):
     model = Autor
     template_name = 'biblioteca/lista_autores.html'
     context_object_name = 'autores'
     ordering = ['nombre']
     paginate_by = 10  # Numero de autores por pagina
+    # Esta clase genera una vista para listar los autores con paginacion
+class DetailAutorView(DetailView): #esta clase genera una vista para ver los detalles de un autor y sus libros disponibles
+    model = Autor
+    template_name = 'biblioteca/detalle_autor.html'
+    context_object_name = 'autor'
 
-class 
-# Esta clase genera una vista para listar los autores con paginacion
+    #Esta funcion agrega al contexto los libros disponibles del autor
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        contexto_libros = Libro.objects.filter(autor=self.object, disponible=True).order_by('titulo')
+        context['libros'] = contexto_libros
+        return context
+    
+class EditAutorView(UpdateView):
+    model = Autor
+    form_class = AutorForm
+    template_name = 'biblioteca/editar_autor.html'
+    success_url = reverse_lazy('biblioteca:lista_autores')
+    pk_url_kwarg = 'autor_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Editar Autor'
+        return context
+
+class AgregarAutorView(CreateView):
+    model = Autor
+    form_class = AutorForm
+    template_name = 'biblioteca/agregar_autor.html'
+    success_url = reverse_lazy('biblioteca:lista_autores')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Agregar Autor'
+        return context
+    
+class EliminarAutorView(DeleteView):
+    model = Autor
+    template_name = 'biblioteca/eliminar_autor.html'
+    success_url = reverse_lazy('biblioteca:lista_autores')
+    pk_url_kwarg = 'autor_id'
+    context_object_name = 'autor'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Eliminar Autor'
+        return context
 
 #Vista de categorias en CBV
 class CategoriaListView(ListView):
@@ -87,21 +132,49 @@ class CategoriaListView(ListView):
     ordering = ['nombre']
     paginate_by = 10  # Numero de categorias por pagina
 
-class CategoriaDetailView(ListView):
-    model = Libro
-    template_name = 'biblioteca/ver_categoria.html'
-    context_object_name = 'libros'
-    paginate_by = 10
-
-    def get_queryset(self):
-        self.categoria = get_object_or_404(Categoria, id=self.kwargs['categoria_id'])
-        return Libro.objects.filter(categoria=self.categoria, disponible=True).order_by('titulo')
+class AgregarCategoriaView(CreateView):
+    model = Categoria
+    form_class = CategoriaForm
+    template_name = 'biblioteca/agregar_categoria.html'
+    success_url = reverse_lazy('biblioteca:lista_categorias')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categoria'] = self.categoria
+        context['titulo'] = 'Agregar Categoria'
         return context
+class CategoriaDetailView(DetailView):
+    model = Categoria
+    template_name = 'biblioteca/detalle_categoria.html'
+    context_object_name = 'categoria'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        contexto_libros = Libro.objects.filter(categoria=self.object, disponible=True).order_by('titulo')
+        context['libros'] = contexto_libros
+        return context
+    
+class EditarCategoriaView(UpdateView):
+    model = Categoria
+    form_class = CategoriaForm
+    template_name = 'biblioteca/editar_categoria.html'
+    success_url = reverse_lazy('biblioteca:lista_categorias')
+    pk_url_kwarg = 'categoria_id'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Editar Categoria'
+        return context
+    
+class EliminarCategoriaView(DeleteView):
+    model = Categoria
+    template_name = 'biblioteca/eliminar_categoria.html'
+    success_url = reverse_lazy('biblioteca:lista_categorias')
+    pk_url_kwarg = 'categoria_id'
+    context_object_name = 'categoria'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Eliminar Categoria'
+        return context
 #Vista de categorias en CBV
 
 #-- Fin de vistas basadas en clases (CBV) - futuro ---#
