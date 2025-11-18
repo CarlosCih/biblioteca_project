@@ -69,17 +69,16 @@ def desactivar_libro(request, libro_id):
 #-- Inicio de vistas basadas en clases (CBV) - futuro ---#
 
 #Vista de autores en CBV
-
 class ListAutorView(ListView):
     model = Autor
-    template_name = 'biblioteca/lista_autores.html'
+    template_name = 'autores/lista_autores.html'
     context_object_name = 'autores'
     ordering = ['nombre']
     paginate_by = 10  # Numero de autores por pagina
     # Esta clase genera una vista para listar los autores con paginacion
 class DetailAutorView(DetailView): #esta clase genera una vista para ver los detalles de un autor y sus libros disponibles
     model = Autor
-    template_name = 'biblioteca/detalle_autor.html'
+    template_name = 'autores/detalle_autor.html' 
     context_object_name = 'autor'
 
     #Esta funcion agrega al contexto los libros disponibles del autor
@@ -92,8 +91,8 @@ class DetailAutorView(DetailView): #esta clase genera una vista para ver los det
 class EditAutorView(UpdateView):
     model = Autor
     form_class = AutorForm
-    template_name = 'biblioteca/editar_autor.html'
-    success_url = reverse_lazy('biblioteca:lista_autores')
+    template_name = 'autores/editar_autor.html'
+    success_url = reverse_lazy('autores:lista_autores') 
     pk_url_kwarg = 'autor_id'
 
     def get_context_data(self, **kwargs):
@@ -104,8 +103,8 @@ class EditAutorView(UpdateView):
 class AgregarAutorView(CreateView):
     model = Autor
     form_class = AutorForm
-    template_name = 'biblioteca/agregar_autor.html'
-    success_url = reverse_lazy('biblioteca:lista_autores')
+    template_name = 'autores/agregar_autor.html'
+    success_url = reverse_lazy('autores:lista_autores')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -114,8 +113,8 @@ class AgregarAutorView(CreateView):
     
 class EliminarAutorView(DeleteView):
     model = Autor
-    template_name = 'biblioteca/eliminar_autor.html'
-    success_url = reverse_lazy('biblioteca:lista_autores')
+    template_name = 'autores/eliminar_autor.html'
+    success_url = reverse_lazy('autores:lista_autores')
     pk_url_kwarg = 'autor_id'
     context_object_name = 'autor'
 
@@ -127,7 +126,7 @@ class EliminarAutorView(DeleteView):
 #Vista de categorias en CBV
 class CategoriaListView(ListView):
     model = Categoria
-    template_name = 'biblioteca/lista_categorias.html'
+    template_name = 'categorias/lista_categorias.html'
     context_object_name = 'categorias'
     ordering = ['nombre']
     paginate_by = 10  # Numero de categorias por pagina
@@ -135,8 +134,8 @@ class CategoriaListView(ListView):
 class AgregarCategoriaView(CreateView):
     model = Categoria
     form_class = CategoriaForm
-    template_name = 'biblioteca/agregar_categoria.html'
-    success_url = reverse_lazy('biblioteca:lista_categorias')
+    template_name = 'categorias/agregar_categoria.html'
+    success_url = reverse_lazy('categorias:lista_categorias')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -144,7 +143,7 @@ class AgregarCategoriaView(CreateView):
         return context
 class CategoriaDetailView(DetailView):
     model = Categoria
-    template_name = 'biblioteca/detalle_categoria.html'
+    template_name = 'categorias/detalle_categoria.html'
     context_object_name = 'categoria'
 
     def get_context_data(self, **kwargs):
@@ -156,8 +155,8 @@ class CategoriaDetailView(DetailView):
 class EditarCategoriaView(UpdateView):
     model = Categoria
     form_class = CategoriaForm
-    template_name = 'biblioteca/editar_categoria.html'
-    success_url = reverse_lazy('biblioteca:lista_categorias')
+    template_name = 'categorias/editar_categoria.html'
+    success_url = reverse_lazy('categorias:lista_categorias')
     pk_url_kwarg = 'categoria_id'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -166,8 +165,8 @@ class EditarCategoriaView(UpdateView):
     
 class EliminarCategoriaView(DeleteView):
     model = Categoria
-    template_name = 'biblioteca/eliminar_categoria.html'
-    success_url = reverse_lazy('biblioteca:lista_categorias')
+    template_name = 'categorias/eliminar_categoria.html'
+    success_url = reverse_lazy('categorias:lista_categorias')
     pk_url_kwarg = 'categoria_id'
     context_object_name = 'categoria'
 
