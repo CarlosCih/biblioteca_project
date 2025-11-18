@@ -18,6 +18,7 @@ class LibroAdmin(admin.ModelAdmin):
     list_display = ('titulo','autor','fecha_publicacion','isbn','disponible')
     list_filter = ('disponible','fecha_publicacion') #filtros laterales
     search_fields = ('titulo','autor','isbn') #barra de busqueda
+    ordering = ('titulo','-fecha_publicacion') #ordenar por fecha de publicacion descendente
 
 #futuro registro para el modelo Usuario
 #from .models import Usuario

@@ -17,8 +17,9 @@ class ListaLibrosView(ListView):
     ordering = ['titulo']
     paginate_by = 10  # Numero de libros por pagina
 
+    #select_related para optimizar consultas a la base de datos, evitando consultas adicionales para autor y categoria
     def get_queryset(self):
-        return Libro.objects.filter(disponible=True).order_by('titulo')
+        return Libro.objects.select_related('autor', 'categoria').exclude(categoria__nombre="Descontinuados").filter(disponible=True).order_by('titulo')
 
 # Vista para ver los detalles de un libro
 class DetalleLibroView(DetailView):
@@ -100,7 +101,8 @@ class DetailAutorView(DetailView): #esta clase genera una vista para ver los det
     #Esta funcion agrega al contexto los libros disponibles del autor
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        contexto_libros = Libro.objects.filter(autor=self.object, disponible=True).order_by('titulo')
+        autor = self.get_object()
+        contexto_libros = autor.libro_set.prefetch_related('categoria').filter(disponible=True).order_by('titulo')
         context['libros'] = contexto_libros
         return context
     
