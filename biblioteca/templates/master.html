@@ -21,13 +21,15 @@
                     </i></a>
                 <ul id="nav-mobile" class="left hide-on-med-and-down">
                     <li><a href="{% url 'biblioteca:lista_libros' %}">Libros</a></li>
-                    <li><a href="{% url 'biblioteca:agregar_libro' %}">Agregar Libro</a></li>
+                    <li><a href="{% url 'biblioteca:lista_categorias' %}">Categorias</a></li>
+                    <li><a href="{% url 'biblioteca:lista_autores' %}">Autores</a></li>
                 </ul>
             </div>
         </nav>
         <ul class="sidenav" id="mobile-demo">
             <li><a href="{% url 'biblioteca:lista_libros' %}">Libros</a></li>
-            <li><a href="{% url 'biblioteca:agregar_libro' %}">Agregar Libro</a></li>
+            <li><a href="{% url 'biblioteca:lista_categorias' %}">Categorias</a></li>
+            <li><a href="{% url 'biblioteca:lista_autores' %}">Autores</a></li>
         </ul>
     </header>
     <main>
@@ -35,18 +37,17 @@
             {% block content %}{% endblock %}
         </div>
     </main>
-    <footer class="page-footer" style="position: fixed; bottom: 0; width: 100%;">
-        <div class="container">
-            <p class="center-align">Biblioteca App &copy; 2025</p>
-        </div>
-    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.sidenav');
             var instances = M.Sidenav.init(elems);
         });
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown();
+        });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 
 </html>

@@ -18,6 +18,10 @@
                     {{ form.autor }}
                 </p>
                 <p>
+                    {{ form.categoria.label_tag }}<br>
+                    {{ form.categoria }}
+                </p>
+                <p>
                     {{ form.fecha_publicacion.label_tag }}<br>
                     {{ form.fecha_publicacion }}
                 </p>
@@ -25,6 +29,19 @@
                     {{ form.isbn.label_tag }}<br>
                     {{ form.isbn }}
                 <p>
+                    {{ form.paginas.label_tag }}<br>
+                    {{ form.paginas }}
+                </p>
+                <p>
+                    {{ form.precio.label_tag }}<br>
+                    {{ form.precio }}
+                </p>
+                <p>
+                    <label>
+                        {{ form.disponible }}
+                        <span>Disponible</span>
+                    </label>
+                </p>
             </div>
             <div class="col-12 center">
                 <button type="submit" class="btn">Guardar</button>

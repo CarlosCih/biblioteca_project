@@ -9,12 +9,13 @@ urlpatterns = [
     path('', views.index, name='index'),
     #-------------------------------------------------------------------------#
     #rutas de libros
-    path('libros/', views.lista_libros, name='lista_libros'),
-    path('libros/<int:libro_id>/', views.detalle_libro, name='detalle_libro'),
-    path('libros/agregar/', views.agregar_libro, name='agregar_libro'),
-    path('libros/<int:libro_id>/editar/', views.editar_libro, name='editar_libro'),
-    path('libros/<int:libro_id>/eliminar/', views.eliminar_libro, name='eliminar_libro'),
-    path('libros/<int:libro_id>/desactivar/', views.desactivar_libro, name='desactivar_libro'),
+    path('libros/', views.ListaLibrosView.as_view(), name='lista_libros'),
+    path('libros/<int:libro_id>/', views.DetalleLibroView.as_view(), name='detalle_libro'),
+    path('libros/agregar/', views.AgregarLibroView.as_view(), name='agregar_libro'),
+    path('libros/<int:libro_id>/editar/', views.EditarLibroView.as_view(), name='editar_libro'),
+    path('libros/<int:libro_id>/eliminar/', views.EliminarLibroView.as_view(), name='eliminar_libro'),
+    path('libros/<int:libro_id>/desactivar/', views.DesactivarLibroView.as_view(), name='desactivar_libro'),
+
     #-------------------------------------------------------------------------#
     #rutas de autores
     path('autores/', views.ListAutorView.as_view(), name='lista_autores'),

@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+{% block title %}
+{% if categoria.pk %}Editar Categoria {{ categoria.nombre }}{% else %}Agregar Nueva Categoria{% endif %} - Biblioteca App
+{% endblock %}
+{% block content %}
+<div class="section">
+    <div class="container">
+        <h2>{% if autor.pk %}Editar Autor {{ autor.nombre }}{% else %}Agregar Nuevo Autor{% endif %}</h2>
+        <form method="post" class="row">
+            {% csrf_token %}
+            <div class="col-12">
+                <p>
+                    {{ form.nombre.label_tag }}<br>
+                    {{ form.nombre }}
+                </p>
+                <p>
+                    {{ form.year.label_tag }}<br>
+                    {{ form.year }}
+                </p>
+                <p>
+                    {{ form.nacionalidad.label_tag }}<br>
+                    {{ form.nacionalidad }}
+                </p>
+            </div>
+            <div class="col-12 center">
+                <button type="submit" class="btn">Guardar</button>
+                <a href="{% url 'biblioteca:lista_autores' %}" class="btn red">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

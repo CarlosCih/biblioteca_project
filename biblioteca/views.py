@@ -1,72 +1,88 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 
 from biblioteca.form import AutorForm, CategoriaForm, LibroForm
 from biblioteca.models import Libro, Autor, Categoria
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 #-- Vista para la pagina de inicio de la aplicacion biblioteca con un FBV(Function Based View) ---#
 def index(request):
     return render(request, 'biblioteca/index.html')
 #Nota: La ruta establecida dice que en la carpeta templates debe haber una carpeta llamada biblioteca que contenga el archivo index.html
 
-# Vista para listar todos los libros
-def lista_libros(request):
-    libros = Libro.objects.filter(disponible=True).order_by('titulo')
-    context = {'libros': libros} #el contexto es un diccionario que se pasa a la plantilla a renderizar
-    return render(request, 'biblioteca/lista_libros.html', context)
+class ListaLibrosView(ListView):
+    model = Libro
+    template_name = 'biblioteca/lista_libros.html'
+    context_object_name = 'libros'
+    ordering = ['titulo']
+    paginate_by = 10  # Numero de libros por pagina
+
+    def get_queryset(self):
+        return Libro.objects.filter(disponible=True).order_by('titulo')
 
 # Vista para ver los detalles de un libro
-def detalle_libro(request, libro_id):
-    libro = Libro.objects.get(id=libro_id)
-    context = {'libro': libro}
-    return render(request, 'biblioteca/detalle_libro.html', context)
+class DetalleLibroView(DetailView):
+    model = Libro
+    template_name = 'biblioteca/detalle_libro.html'
+    context_object_name = 'libro'
+    pk_url_kwarg = 'libro_id'
 
 # Vista para agregar un nuevo libro
-def agregar_libro(request):
-    if request.method == 'POST':
-        form = LibroForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return lista_libros(request) #redirecciona a la lista de libros despues de agregar uno nuevo
-    else:
-        form = LibroForm()
-    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Agregar Libro', 'libro': None})
+class AgregarLibroView(CreateView):
+    model = Libro
+    form_class = LibroForm
+    template_name = 'biblioteca/libro_form.html'
+    success_url = reverse_lazy('biblioteca:lista_libros')
     
-# Vista para editar un libro existente
-def editar_libro(request, libro_id):
-    libro = get_object_or_404(Libro, id=libro_id)
-    if request.method=='POST':
-        form=LibroForm(request.POST, instance=libro) #instance indica que se esta editando un libro existente
-        if form.is_valid():
-            form.save()
-            return lista_libros(request) #redirecciona a la lista de libros despues de editar uno
-    else:
-        form=LibroForm(instance=libro)
-    return render(request, 'biblioteca/libro_form.html', {'form': form, 'titulo': 'Editar Libro', 'libro': libro})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Agregar Libro'
+        return context
 
+# Vista para editar un libro existente
+class EditarLibroView(UpdateView):
+    model = Libro
+    form_class = LibroForm
+    template_name = 'biblioteca/libro_form.html'
+    success_url = reverse_lazy('biblioteca:lista_libros')
+    pk_url_kwarg = 'libro_id'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Editar Libro'
+        return context
 
 # Vista para eliminar un libro existente
-def eliminar_libro(request, libro_id):
-    libro = get_object_or_404(Libro, id=libro_id)
-    if request.method == 'POST':
-        libro.delete()
-        return lista_libros(request)
-    return render(request, 'biblioteca/eliminar_libro.html', {'libro': libro, 'titulo': 'Eliminar Libro'}) 
-## Esta vista muestra una confirmacion antes de eliminar el libro, el borrado es definitivo.
+class EliminarLibroView(DeleteView):
+    model = Libro
+    template_name = 'biblioteca/eliminar_libro.html'
+    success_url = reverse_lazy('lista_libros')
+    pk_url_kwarg = 'libro_id'
+    context_object_name = 'libro'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Eliminar Libro'
+        return context
 
-#Vista para un soft delete de un libro (marcar como no disponible en lugar de eliminar)
-def desactivar_libro(request, libro_id):
-    libro = get_object_or_404(Libro, id=libro_id)
-    if request.method == 'POST':
-        libro.disponible = False
-        libro.save()
-        return lista_libros(request)
-    return render(request, 'biblioteca/desactivar_libro.html', {'libro': libro, 'titulo': 'Desactivar Libro'})
-
-#-- Fin de la vista basadas en funciones (FBV) ---#
-
-#-- Inicio de vistas basadas en clases (CBV) - futuro ---#
+# Vista para un soft delete de un libro (marcar como no disponible)
+class DesactivarLibroView(UpdateView):
+    model = Libro
+    template_name = 'biblioteca/desactivar_libro.html'
+    success_url = reverse_lazy('biblioteca:lista_libros')
+    pk_url_kwarg = 'libro_id'
+    context_object_name = 'libro'
+    fields = []  # No necesitamos campos porque solo cambiamos disponible
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = 'Desactivar Libro'
+        return context
+    
+    def form_valid(self, form):
+        self.object.disponible = False
+        self.object.save()
+        return redirect(self.success_url)
 
 #Vista de autores en CBV
 class ListAutorView(ListView):
@@ -91,8 +107,8 @@ class DetailAutorView(DetailView): #esta clase genera una vista para ver los det
 class EditAutorView(UpdateView):
     model = Autor
     form_class = AutorForm
-    template_name = 'autores/editar_autor.html'
-    success_url = reverse_lazy('autores:lista_autores') 
+    template_name = 'autores/autor_form.html'
+    success_url = reverse_lazy('biblioteca:lista_autores') #se usa el namespace definido en urls.py
     pk_url_kwarg = 'autor_id'
 
     def get_context_data(self, **kwargs):
@@ -103,8 +119,8 @@ class EditAutorView(UpdateView):
 class AgregarAutorView(CreateView):
     model = Autor
     form_class = AutorForm
-    template_name = 'autores/agregar_autor.html'
-    success_url = reverse_lazy('autores:lista_autores')
+    template_name = 'autores/autor_form.html'
+    success_url = reverse_lazy('biblioteca:lista_autores')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -114,7 +130,7 @@ class AgregarAutorView(CreateView):
 class EliminarAutorView(DeleteView):
     model = Autor
     template_name = 'autores/eliminar_autor.html'
-    success_url = reverse_lazy('autores:lista_autores')
+    success_url = reverse_lazy('biblioteca:lista_autores')
     pk_url_kwarg = 'autor_id'
     context_object_name = 'autor'
 
@@ -129,13 +145,13 @@ class CategoriaListView(ListView):
     template_name = 'categorias/lista_categorias.html'
     context_object_name = 'categorias'
     ordering = ['nombre']
-    paginate_by = 10  # Numero de categorias por pagina
+    paginate_by = 3  # Numero de categorias por pagina
 
 class AgregarCategoriaView(CreateView):
     model = Categoria
     form_class = CategoriaForm
-    template_name = 'categorias/agregar_categoria.html'
-    success_url = reverse_lazy('categorias:lista_categorias')
+    template_name = 'categorias/categoria_form.html'
+    success_url = reverse_lazy('biblioteca:lista_categorias')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -155,8 +171,8 @@ class CategoriaDetailView(DetailView):
 class EditarCategoriaView(UpdateView):
     model = Categoria
     form_class = CategoriaForm
-    template_name = 'categorias/editar_categoria.html'
-    success_url = reverse_lazy('categorias:lista_categorias')
+    template_name = 'categorias/categoria_form.html'
+    success_url = reverse_lazy('biblioteca:lista_categorias')
     pk_url_kwarg = 'categoria_id'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -166,7 +182,7 @@ class EditarCategoriaView(UpdateView):
 class EliminarCategoriaView(DeleteView):
     model = Categoria
     template_name = 'categorias/eliminar_categoria.html'
-    success_url = reverse_lazy('categorias:lista_categorias')
+    success_url = reverse_lazy('biblioteca:lista_categorias')
     pk_url_kwarg = 'categoria_id'
     context_object_name = 'categoria'
 
