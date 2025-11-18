@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "master.html" %}
 
 {% block title %}Iniciar Sesión{% endblock %}
 
@@ -9,6 +9,11 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title center-align">Iniciar Sesión</span>
+                    {% if messages %}
+                    <div class="card-panel red lighten-2 white-text center-align">
+                        <p>{% for message in messages %}{{ message }}{% endfor %}</p>
+                    </div>
+                    {% endif %}
                     <form method="post">
                         {% csrf_token %}
                         <div class="input-field">
@@ -25,7 +30,11 @@
                     </form>
                 </div>
                 <div class="card-action center-align">
-                    <p>¿No tienes una cuenta? <a href="{% url 'inicio_sesion:register' %}">Regístrate aquí</a></p>
+                    <p>¿No tienes una cuenta? <a c href="{% url 'inicio_sesion:register' %}">Regístrate aquí</a>
+                    </p>
+                    <p>
+                    <a class="text-black" href="#">¿Olvidaste tu contraseña?</a>
+                    </p>
                 </div>
             </div>
         </div>

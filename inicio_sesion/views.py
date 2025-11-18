@@ -21,12 +21,12 @@ def register(request):
 
             #mensaje de exito
             messages.success(request, 'Registro exitoso. Ahora puedes iniciar sesión.')
-            return redirect('inicio_sesion:login')
+            return redirect('biblioteca:index')
         else:
             messages.error(request, 'Por favor corrige los errores en el formulario.')
     else:
         form = RegisterForm()
-    return render(request, 'inicio_sesion/session/register.html', {'form': form})
+    return render(request, 'session/register.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
