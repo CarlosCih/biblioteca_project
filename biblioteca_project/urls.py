@@ -22,6 +22,7 @@ urlpatterns = [
     #se incluyen las rutas de la aplicacion biblioteca
     path('biblioteca/', include('biblioteca.urls')), 
     #la ruta biblioteca/ indica que todas las rutas definidas en biblioteca/urls.py iran precedidas por biblioteca/. ejemplo: biblioteca/libros/
+    path('inicio/', include('inicio_sesion.urls')),
 
     #si se desea que la aplicacion biblioteca sea la pagina principal, se puede usar la siguiente linea en lugar de la anterior
     #path('', include('biblioteca.urls')),

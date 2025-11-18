@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'biblioteca.apps.BibliotecaConfig',
+    'inicio.apps.InicioConfig',
+    'inicio_sesion.apps.InicioSesionConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +58,7 @@ ROOT_URLCONF = 'biblioteca_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,3 +138,10 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+LOGING_URL = 'inicio_sesion:login'  # Ruta para redirigir en caso de no estar autenticado; inicio_sesion es el nombre de la app y login es el name de la url definida en inicio_sesion/urls.py
+
+LOGIN_REDIRECT_URL = 'biblioteca:index'  # Ruta para redirigir después de iniciar sesión; biblioteca es el nombre de la app y index es el name de la url definida en biblioteca/urls.py
+#NOTA: Talvez la interfaz de biblioteca del lado de usuario deba ser una aplicacion aparte para evitar mezclar funcionalidades de administracion con los usuarios normales o simplemente limitar el acceso al admin a ciertos usuarios.
+
+LOGOUT_REDIRECT_URL = 'inicio_sesion:login'  # Ruta para redirigir después de cerrar sesión; inicio es el nombre de la app y home es el name de la url definida en inicio/urls.py
