@@ -145,3 +145,5 @@ LOGIN_REDIRECT_URL = 'biblioteca:index'  # Ruta para redirigir después de inici
 #NOTA: Talvez la interfaz de biblioteca del lado de usuario deba ser una aplicacion aparte para evitar mezclar funcionalidades de administracion con los usuarios normales o simplemente limitar el acceso al admin a ciertos usuarios.
 
 LOGOUT_REDIRECT_URL = 'inicio_sesion:login'  # Ruta para redirigir después de cerrar sesión; inicio es el nombre de la app y home es el name de la url definida en inicio/urls.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
