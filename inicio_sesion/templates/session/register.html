@@ -15,22 +15,34 @@
                     {% endif %}
                     <form method="post">
                         {% csrf_token %}
-                        <div class="input-field">
-                            <input type="text" name="username" id="username" required>
-                            <label for="username">Nombre de Usuario</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="email" name="email" id="email" required>
-                            <label for="email">Correo Electrónico</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" name="password1" id="password1" required>
-                            <label for="password1">Contraseña</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" name="password2" id="password2" required>
-                            <label for="password2">Confirmar Contraseña</label>
-                        </div>
+                        <p>
+                            {{ form.username.label_tag }}<br>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="red-text">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </p>
+                        <p>
+                            {{ form.email.label_tag }}<br>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="red-text">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </p>
+                        <p>
+                            {{ form.password.label_tag }}<br>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="red-text">{{ form.password.errors }}</div>
+                            {% endif %}
+                        </p>
+                        <p>
+                            {{ form.confirm_password.label_tag }}<br>
+                            {{ form.confirm_password }}
+                            {% if form.confirm_password.errors %}
+                                <div class="red-text">{{ form.confirm_password.errors }}</div>
+                            {% endif %}
+                        </p>
                         <div class="center-align">
                             <button type="submit" class="btn waves-effect waves-light">Registrarse</button>
                         </div>

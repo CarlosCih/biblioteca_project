@@ -15,7 +15,7 @@
 
 <body>
     <header>
-        <div class="navbar-fixed">
+        <div class="">
         <nav >
             <div class="nav-wrapper brown lighten-2 px-3" style="padding-left: 20px; padding-right: 20px;">
                 <a href="{% url 'inicio:home' %}" class="brand-logo center">Mi Biblioteca</a>
@@ -30,7 +30,7 @@
                     <li><a href="{% url 'biblioteca:lista_autores' %}">Autores</a></li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="#">Hola, {{ user.username }}</a></li>
+                    <li><a href="{% url 'inicio_sesion:profile' %}">Hola, {{ user.username }}</a></li>
                     <li><a href="{% url 'inicio_sesion:logout' %}">Cerrar Sesión</a></li>
                     {% else %}
                     <ul>
@@ -49,7 +49,7 @@
                 <li><a href="{% url 'biblioteca:lista_autores' %}">Autores</a></li>
                 <li class="divider"></li>
                 {% if user.is_authenticated %}
-                <li class=""><a href="#">Hola, {{ user.username }}</a></li>
+                <li class=""><a href="{% url 'inicio_sesion:profile' %}">Hola, {{ user.username }}</a></li>
                 <li><a href="{% url 'inicio_sesion:logout' %}">Cerrar Sesión</a></li>
                 {% else %}
                 <li><a href="{% url 'inicio_sesion:login' %}">Iniciar Sesión</a></li>

@@ -1,0 +1,28 @@
+{%extends "master.html" %}
+
+{% block title %}Perfil{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top: 200px;">
+        <div class="col s12 m8 l6 offset-m2 offset-l3">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title center-align">Perfil de <strong>{{ user.username }}</strong></span>
+                    <p><strong>Nombre de usuario:</strong> {{ user.username }}</p>
+                    <p>
+                        <strong>Nombre completo:</strong> {{ user.first_name }} {{ user.last_name }}
+                    </p>
+                    <p>
+                        <strong>Fecha de registro:</strong> {{ user.date_joined|date:"d M Y" }}
+                    </p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <div class="center-align" style="margin-top: 20px;">
+                        <a href="{% url 'inicio_sesion:edit_profile' %}" class="btn cyan waves-effect waves-light">Editar Perfil</a>
+                        <a href="#" class="btn green lighten-2">Cambiar Contraseña</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

@@ -10,6 +10,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('profile/', views.profile, name='profile'),
+    path('delete_account/', views.delete_profile, name='delete_account'),
     #rutas para el cambio de contraseña
 
     

@@ -7,7 +7,12 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['username', 'email', 'password', 'confirm_password']
+        widgets = {
+            'email': forms.EmailInput(attrs={'placeholder': 'Ejemplo: usuario@ejemplo.com'}),
+            'password': forms.PasswordInput(attrs={'placeholder': 'Ingrese su contraseña'}),
+            'confirm_password': forms.PasswordInput(attrs={'placeholder': 'Confirme su contraseña'}),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -18,4 +23,19 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Las contraseñas no coinciden.")
 
         return cleaned_data
+    
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {
+            'email': forms.EmailInput(attrs={'placeholder': 'Ejemplo: usuario@ejemplo.com'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'Ejemplo: Juan'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Ejemplo: Pérez'}),
+        }
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exclude(username=self.instance.username).exists():
+            raise forms.ValidationError('Este correo electrónico ya está en uso.')
+        return email
 

@@ -1,0 +1,53 @@
+{%extends "master.html"%}
+{% block title %}Editar Perfil{% endblock %}
+{%block content%}
+<div class="container">
+    <div class="section">
+        <div class="row">
+            <div class="col s12 m8 l6 offset-m2 offset-l3">
+                <div class="card">
+                    <div class="card-content">
+                        <a href="{% url 'inicio_sesion:profile' %}" class="btn blue lighten-5"><i class="material-icons black-text">arrow_back</i></a>
+                        <span class="card-title center-align">Editar Perfil</span>
+                        <form method="post">
+                            {% csrf_token %}
+                            <p>
+                                {{ form.username.label_tag }}<br>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                            <div class="red-text">{{ form.username.errors }}</div>
+                            {% endif %}
+                            </p>
+                            <p>
+                                {{ form.first_name.label_tag }}<br>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                            <div class="red-text">{{ form.first_name.errors }}</div>
+                            {% endif %}
+                            </p>
+                            <p>
+                                {{ form.last_name.label_tag }}<br>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                            <div class="red-text">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                            </p>
+                            <p>
+                                {{ form.email.label_tag }}<br>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                            <div class="red-text">{{ form.email.errors }}</div>
+                            {% endif %}
+                            </p>
+                            <div class="center-align card-action">
+                                <a href="{% url 'inicio_sesion:delete_account' %}" class="btn waves-effect waves-light red">Eliminar Cuenta</a>
+                                <button type="submit" class="btn waves-effect waves-light">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

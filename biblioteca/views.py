@@ -1,16 +1,23 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 
 from biblioteca.form import AutorForm, CategoriaForm, LibroForm
 from biblioteca.models import Libro, Autor, Categoria
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+@login_required(login_url=reverse_lazy('inicio_sesion:login'))
 #-- Vista para la pagina de inicio de la aplicacion biblioteca con un FBV(Function Based View) ---#
 def index(request):
     return render(request, 'biblioteca/index.html')
 #Nota: La ruta establecida dice que en la carpeta templates debe haber una carpeta llamada biblioteca que contenga el archivo index.html
 
-class ListaLibrosView(ListView):
+
+class ListaLibrosView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Libro
     template_name = 'biblioteca/lista_libros.html'
     context_object_name = 'libros'
@@ -22,14 +29,18 @@ class ListaLibrosView(ListView):
         return Libro.objects.select_related('autor', 'categoria').exclude(categoria__nombre="Descontinuados").filter(disponible=True).order_by('titulo')
 
 # Vista para ver los detalles de un libro
-class DetalleLibroView(DetailView):
+class DetalleLibroView(LoginRequiredMixin, DetailView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Libro
     template_name = 'biblioteca/detalle_libro.html'
     context_object_name = 'libro'
     pk_url_kwarg = 'libro_id'
 
 # Vista para agregar un nuevo libro
-class AgregarLibroView(CreateView):
+class AgregarLibroView(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Libro
     form_class = LibroForm
     template_name = 'biblioteca/libro_form.html'
@@ -41,7 +52,9 @@ class AgregarLibroView(CreateView):
         return context
 
 # Vista para editar un libro existente
-class EditarLibroView(UpdateView):
+class EditarLibroView(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Libro
     form_class = LibroForm
     template_name = 'biblioteca/libro_form.html'
@@ -54,7 +67,9 @@ class EditarLibroView(UpdateView):
         return context
 
 # Vista para eliminar un libro existente
-class EliminarLibroView(DeleteView):
+class EliminarLibroView(LoginRequiredMixin, DeleteView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Libro
     template_name = 'biblioteca/eliminar_libro.html'
     success_url = reverse_lazy('lista_libros')
@@ -67,7 +82,9 @@ class EliminarLibroView(DeleteView):
         return context
 
 # Vista para un soft delete de un libro (marcar como no disponible)
-class DesactivarLibroView(UpdateView):
+class DesactivarLibroView(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Libro
     template_name = 'biblioteca/desactivar_libro.html'
     success_url = reverse_lazy('biblioteca:lista_libros')
@@ -86,14 +103,18 @@ class DesactivarLibroView(UpdateView):
         return redirect(self.success_url)
 
 #Vista de autores en CBV
-class ListAutorView(ListView):
+class ListAutorView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Autor
     template_name = 'autores/lista_autores.html'
     context_object_name = 'autores'
     ordering = ['nombre']
     paginate_by = 10  # Numero de autores por pagina
     # Esta clase genera una vista para listar los autores con paginacion
-class DetailAutorView(DetailView): #esta clase genera una vista para ver los detalles de un autor y sus libros disponibles
+class DetailAutorView(LoginRequiredMixin, DetailView): #esta clase genera una vista para ver los detalles de un autor y sus libros disponibles
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Autor
     template_name = 'autores/detalle_autor.html' 
     context_object_name = 'autor'
@@ -106,7 +127,9 @@ class DetailAutorView(DetailView): #esta clase genera una vista para ver los det
         context['libros'] = contexto_libros
         return context
     
-class EditAutorView(UpdateView):
+class EditAutorView(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Autor
     form_class = AutorForm
     template_name = 'autores/autor_form.html'
@@ -118,7 +141,9 @@ class EditAutorView(UpdateView):
         context['titulo'] = 'Editar Autor'
         return context
 
-class AgregarAutorView(CreateView):
+class AgregarAutorView(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Autor
     form_class = AutorForm
     template_name = 'autores/autor_form.html'
@@ -129,7 +154,9 @@ class AgregarAutorView(CreateView):
         context['titulo'] = 'Agregar Autor'
         return context
     
-class EliminarAutorView(DeleteView):
+class EliminarAutorView(LoginRequiredMixin, DeleteView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Autor
     template_name = 'autores/eliminar_autor.html'
     success_url = reverse_lazy('biblioteca:lista_autores')
@@ -142,14 +169,18 @@ class EliminarAutorView(DeleteView):
         return context
 
 #Vista de categorias en CBV
-class CategoriaListView(ListView):
+class CategoriaListView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Categoria
     template_name = 'categorias/lista_categorias.html'
     context_object_name = 'categorias'
     ordering = ['nombre']
     paginate_by = 3  # Numero de categorias por pagina
 
-class AgregarCategoriaView(CreateView):
+class AgregarCategoriaView(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Categoria
     form_class = CategoriaForm
     template_name = 'categorias/categoria_form.html'
@@ -159,7 +190,9 @@ class AgregarCategoriaView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Agregar Categoria'
         return context
-class CategoriaDetailView(DetailView):
+class CategoriaDetailView(LoginRequiredMixin, DetailView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Categoria
     template_name = 'categorias/detalle_categoria.html'
     context_object_name = 'categoria'
@@ -170,7 +203,9 @@ class CategoriaDetailView(DetailView):
         context['libros'] = contexto_libros
         return context
     
-class EditarCategoriaView(UpdateView):
+class EditarCategoriaView(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Categoria
     form_class = CategoriaForm
     template_name = 'categorias/categoria_form.html'
@@ -181,7 +216,9 @@ class EditarCategoriaView(UpdateView):
         context['titulo'] = 'Editar Categoria'
         return context
     
-class EliminarCategoriaView(DeleteView):
+class EliminarCategoriaView(LoginRequiredMixin, DeleteView):
+    login_url = reverse_lazy('inicio_sesion:login')
+    redirect_field_name = 'next'
     model = Categoria
     template_name = 'categorias/eliminar_categoria.html'
     success_url = reverse_lazy('biblioteca:lista_categorias')
@@ -207,3 +244,8 @@ class EliminarCategoriaView(DeleteView):
 #Estos archivos contendran el codigo HTML para renderizar las vistas correspondientes.
 #Se recomienda crear una plantilla master.html para heredar en las demas plantillas y mantener un diseño consistente.
 #La plantilla master.html puede incluir el encabezado, pie de pagina y estilos comunes.
+
+##
+# Para denegar el acceso de usuarios no autentificados a las vistas, se utiliza diferentes metodos dependiendo si la estructura es FBV o CBV.
+# En una funcion FBV se debe utilizar el decorador @login_required
+# En cambio en una clase CBV se utiliza el mixin LoginRequiredMixin, que debe ser el primer mixin en la lista de herencia de la clase. 

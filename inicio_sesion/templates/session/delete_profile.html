@@ -1,0 +1,51 @@
+{%extends 'master.html' %}
+{%block title %}Delete Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">Eliminar Cuenta</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                        <h5 class="alert-heading">¡Advertencia!</h5>
+                        <p>Esta acción desactivará tu cuenta permanentemente.</p>
+                        <hr>
+                        <p class="mb-0">No podrás acceder a tu cuenta hasta que un administrador la reactive.</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="confirm" class="form-label">
+                                Para confirmar, escribe <strong>DELETE</strong> en el campo de abajo:
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="confirm" 
+                                name="confirm" 
+                                required
+                                placeholder="Escribe DELETE"
+                            >
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                Desactivar mi cuenta
+                            </button>
+                            <a href="{% url 'inicio_sesion:profile' %}" class="btn btn-secondary">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
