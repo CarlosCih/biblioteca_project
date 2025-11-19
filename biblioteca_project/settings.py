@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'biblioteca.apps.BibliotecaConfig',
     'inicio.apps.InicioConfig',
     'inicio_sesion.apps.InicioSesionConfig',
+    'import_export',
 ]
 
 MIDDLEWARE = [
