@@ -1,70 +1,73 @@
 {% extends "master.html" %}
 {% block title %}Lista de Categorias - Biblioteca App{% endblock %}
 {% block content %}
-<div class="section">
+<div class="container">
+    <div class="section">
 
-    <h2>Lista de Categorias</h2>
-    <p>
-        Aquí puedes ver todas las categorias disponibles en la biblioteca. Puedes agregar, editar o eliminar categorias
-        según
-        sea necesario.
-    </p>
-    <div class="right-align">
-        <a href="{% url 'biblioteca:agregar_categoria' %}" class="btn ">Agregar Nueva Categoria</a>
-    </div>
-    <div class="">
-        <ul>
-            <li>
-                <!--List Card-->
-                {% for categoria in categorias %}
-                <div class="card grey lighten-4">
-                    <div class="card-content">
-                        <span class="card-title">{{ categoria.nombre }}</span>
-                        <p>{{ categoria.descripcion }}</p>
+        <h2>Lista de Categorias</h2>
+        <p>
+            Aquí puedes ver todas las categorias disponibles en la biblioteca. Puedes agregar, editar o eliminar
+            categorias
+            según
+            sea necesario.
+        </p>
+        <div class="right-align">
+            <a href="{% url 'biblioteca:agregar_categoria' %}" class="btn ">Agregar Nueva Categoria</a>
+        </div>
+        <div class="">
+            <ul>
+                <li>
+                    <!--List Card-->
+                    {% for categoria in categorias %}
+                    <div class="card grey lighten-4">
+                        <div class="card-content">
+                            <span class="card-title">{{ categoria.nombre }}</span>
+                            <p>{{ categoria.descripcion }}</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="btn-small blue waves-effect waves-light"
+                                href="{% url 'biblioteca:editar_categoria' categoria.id %}">
+                                <i class="material-icons left">edit</i>Editar
+                            </a>
+                            <a class="btn-small red waves-effect waves-light"
+                                href="{% url 'biblioteca:eliminar_categoria' categoria.id %}">
+                                <i class="material-icons left">delete</i>Eliminar
+                            </a>
+                        </div>
                     </div>
-                    <div class="card-action">
-                        <a class="btn-small blue waves-effect waves-light"
-                            href="{% url 'biblioteca:editar_categoria' categoria.id %}">
-                            <i class="material-icons left">edit</i>Editar
-                        </a>
-                        <a class="btn-small red waves-effect waves-light"
-                            href="{% url 'biblioteca:eliminar_categoria' categoria.id %}">
-                            <i class="material-icons left">delete</i>Eliminar
-                        </a>
-                    </div>
-                </div>
-                {% empty %}
-                <p>No hay categorias disponibles.</p>
-                {% endfor %}
-            </li>
-        </ul>
-        <!--Paginador-->
-        <div>
-            {% if is_paginated %}
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                <li class="waves-effect"><a href="?page={{ page_obj.previous_page_number }}"><i
-                            class="material-icons">chevron_left</i></a></li>
-                {% else %}
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                {% endif %}
-
-                {% for num in paginator.page_range %}
-                {% if page_obj.number == num %}
-                <li class="active blue"><a href="#!">{{ num }}</a></li>
-                {% else %}
-                <li class="waves-effect"><a href="?page={{ num }}">{{ num }}</a></li>
-                {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i
-                            class="material-icons">chevron_right</i></a></li>
-                {% else %}
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                {% endif %}
+                    {% empty %}
+                    <p>No hay categorias disponibles.</p>
+                    {% endfor %}
+                </li>
             </ul>
-            {% endif %}
+            <!--Paginador-->
+            <div>
+                {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                    <li class="waves-effect"><a href="?page={{ page_obj.previous_page_number }}"><i
+                                class="material-icons">chevron_left</i></a></li>
+                    {% else %}
+                    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                    {% endif %}
+
+                    {% for num in paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="active blue"><a href="#!">{{ num }}</a></li>
+                    {% else %}
+                    <li class="waves-effect"><a href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="waves-effect"><a href="?page={{ page_obj.next_page_number }}"><i
+                                class="material-icons">chevron_right</i></a></li>
+                    {% else %}
+                    <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

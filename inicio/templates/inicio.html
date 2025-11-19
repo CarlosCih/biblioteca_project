@@ -1,0 +1,32 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+    <div class="">
+
+        <div class="parallax-container">
+            <div class="parallax">
+                <img src="{% static 'img/biblioteca1.jpg' %}">
+            </div>
+        </div>
+        <div class="section white">
+            <div class="row container">
+                <h2 class="header">Bienvenido a Mi Biblioteca</h2>
+                <p class="grey-text text-darken-3 lighten-3">
+                    Explora una amplia colección de libros, autores y categorías. Regístrate o inicia sesión para
+                    comenzar tu aventura literaria con nosotros.
+                </p>
+
+            </div>
+        </div>
+        <div class="parallax-container">
+            <div class="parallax"><img src="{% static 'img/biblioteca2.jpg' %}"></div>
+        </div>
+
+    </div>
+</body>
+
+</html>    </div>
+{% endblock %}
